@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch CarutaUiApplication",
+            "request": "launch",
+            "mainClass": "com.caruta.kn.CarutaUiApplication",
+            "projectName": "catuta-ui",
+            "args": "--spring.profiles.active=develop"
+        }
+    ]
+}
