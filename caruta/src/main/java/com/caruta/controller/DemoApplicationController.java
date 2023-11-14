@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caruta.kn.model.DemoRequest;
+import com.caruta.kn.model.DemoResponse;
 import com.caruta.kn.service.DemoApplicationService;
 
 @RestController
@@ -24,9 +25,13 @@ public class DemoApplicationController {
 	 */
 	@PostMapping(value = "/demo", consumes = "application/json")
 	@ResponseBody
-	public String demo(@RequestBody DemoRequest request) {
+	public DemoResponse demo(@RequestBody DemoRequest request) {
 		service.demo(request.getArg());
 
-		return "成功！！ あああリクエスト：" +  request.getArg();
+		DemoResponse response = new DemoResponse();
+		response.setNum(1);
+		response.setArg(request.getArg2());
+
+		return response;
 	}
 }
