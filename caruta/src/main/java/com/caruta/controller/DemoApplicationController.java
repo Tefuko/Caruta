@@ -27,6 +27,6 @@ public class DemoApplicationController {
 	public String demo(@RequestBody DemoRequest request) {
 		service.demo(request.getArg());
 
-		return "成功！！！ リクエスト：" +  request.getArg();
+		return "成功！！ リクエスト：" +  request.getArg();
 	}
 }
