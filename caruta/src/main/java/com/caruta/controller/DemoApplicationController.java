@@ -25,6 +25,6 @@ public class DemoApplicationController {
 	@ResponseBody
 	public String demo(@RequestBody String arg) {
 		service.demo(arg);
-		return "OK";
+		return "OKあああ";
 	}
 }
