@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.caruta.kn.model.Demo2Response;
 import com.caruta.kn.model.DemoRequest;
 import com.caruta.kn.service.DemoApplicationService;
 
@@ -28,5 +29,14 @@ public class DemoApplicationController {
 		service.demo(request.getArg());
 
 		return "成功！！ リクエスト：" +  request.getArg();
+	}
+
+	/**
+	 *
+	 */
+	@PostMapping(value = "/demo2", consumes = "application/json")
+	@ResponseBody
+	public Demo2Response[] demo2() {
+		return service.demo2();
 	}
 }

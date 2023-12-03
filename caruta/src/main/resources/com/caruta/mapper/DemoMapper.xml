@@ -3,8 +3,16 @@
 
 <mapper namespace="com.caruta.kn.mapper.DemoMapper">
 
-  <select id="selectDemo" resultType="string">
-    select * from demo
+  <select id="demo2" resultMap="Demo2Response">
+    select
+      name,
+      address
+    from
+      test_table
+    where
+      delete_flg = false
   </select>
+
+  <resultMap id="Demo2Response" type="com.caruta.kn.model.Demo2Response" autoMapping="true" />
 
 </mapper>
