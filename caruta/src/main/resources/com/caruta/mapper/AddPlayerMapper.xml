@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.caruta.kn.mapper.AddPlayerMapper">
+
+  <select id="getAffiliationId" resultMap="int">
+    SELECT
+      association_id
+    FROM
+      association_table
+    WHERE
+      <!-- asscosication_nameがユニークである前提 -->
+      <!-- asscosication_nameだけでユニークにならないなら他の情報も条件から追加 -->
+      association_name = #{affiliationName}
+      <!-- AND
+      delete_flg = false -->
+  </select>
+
+  <insert id="addPlayer">
+    INSERT INTO player_table
+    (
+      last_name,
+      first_name,
+      last_name_kana,
+      first_name_kana,
+      <!-- postal_codeが正しそう -->
+      postal_cod,
+      address,
+      birth_date,
+      phone_number,
+      email,
+      rank,
+      membership_type,
+      annual_participation_count,
+      points,
+      affiliation_id
+      delete_flg
+    )
+    VALUES
+    (
+      #{lastName},
+      #{firstName},
+      #{lastNameKana},
+      #{firstNameKana},
+      #{postalCode},
+      #{address},
+      #{birthday, jdbcType=DATE}
+      #{telephoneNumber},
+      #{email},
+      #{rank},
+      #{membershipType},
+      0,
+      0,
+      ${affiliationId},
+      false
+    )
+  </insert>
+
+</mapper>
