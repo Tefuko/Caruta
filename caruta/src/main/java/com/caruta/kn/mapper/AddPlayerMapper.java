@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface AddPlayerMapper {
 
-  Integer getAffiliationId(
-      @Param("affiliationName") String affiliationName);
+//   Integer getAffiliationId(
+//       @Param("affiliationName") String affiliationName);
 
   void addPlayer(
       @Param("lastName") String lastName,

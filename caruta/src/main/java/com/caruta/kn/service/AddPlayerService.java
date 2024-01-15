@@ -57,8 +57,6 @@ public class AddPlayerService {
 
     } catch (ParseException e) {
       throw new ApplicationException("W_0002");
-    } catch (Exception e) {
-      System.err.println(e.getMessage());
     }
   }
 }

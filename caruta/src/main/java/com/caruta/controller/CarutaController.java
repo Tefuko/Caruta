@@ -31,6 +31,9 @@ public class CarutaController {
 
     } catch(ApplicationException e) {
       return e.getErrorCode() + ":" + e.getMessage();
+    } catch(Throwable e) {
+      System.err.println(e.getMessage());
+      return "登録失敗";
     }
 
     return "登録成功";
