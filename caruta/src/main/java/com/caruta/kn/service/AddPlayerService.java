@@ -7,9 +7,11 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.caruta.kn.enums.MessageType;
+import com.caruta.kn.exception.ApplicationException;
 import com.caruta.kn.model.AddPlayerRequest;
+import com.caruta.kn.model.Message;
 import com.caruta.kn.repository.AddPlayerRepository;
-import com.caruta.kn.utils.ApplicationException;
 
 @Service
 public class AddPlayerService {
@@ -31,7 +33,7 @@ public class AddPlayerService {
 
     // 所属会名が会テーブルに存在しない場合エラースロー
     if (affiliationId == null) {
-      throw new ApplicationException("W_0001");
+      throw new ApplicationException(new Message(MessageType.WARNING, "W_0001"));
     }
 
     return affiliationId;
@@ -56,7 +58,7 @@ public class AddPlayerService {
       addPlayerRepository.addPlayer(playerInfo, affiliationId, birthday);
 
     } catch (ParseException e) {
-      throw new ApplicationException("W_0002");
+      throw new ApplicationException(new Message(MessageType.WARNING, "W_0002"));
     }
   }
 }

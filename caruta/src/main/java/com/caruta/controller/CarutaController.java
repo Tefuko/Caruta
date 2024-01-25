@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.caruta.kn.enums.MessageType;
+import com.caruta.kn.exception.ApplicationException;
 import com.caruta.kn.model.AddPlayerRequest;
+import com.caruta.kn.model.Message;
+import com.caruta.kn.model.Response;
 import com.caruta.kn.service.AddPlayerService;
-import com.caruta.kn.utils.ApplicationException;
 
 @RestController
 @RequestMapping("/caruta")
@@ -20,7 +23,9 @@ public class CarutaController {
   AddPlayerService addPlayerService;
 
   @PostMapping(value = "/addPlayer", consumes = "application/json")
-  public String addPlayer(@RequestBody AddPlayerRequest request) {
+  public Response<Void> addPlayer(@RequestBody AddPlayerRequest request) {
+
+    Response<Void> response = new Response<>();
 
     try {
       // 所属会名を元に所属会IDを取得
@@ -30,12 +35,21 @@ public class CarutaController {
       addPlayerService.addPlayer(request, affiliationId);
 
     } catch(ApplicationException e) {
-      return e.getErrorCode() + ":" + e.getMessage();
+
+      e.getMessages().forEach(message -> {
+        response.addMessage(message);
+      });
+      return response;
+
     } catch(Throwable e) {
-      System.err.println(e.getMessage());
-      return "登録失敗";
+
+      String message = e.getMessage();
+      response.addMessage(new Message(MessageType.DANGER, "E_0001", message));
+      return response;
     }
 
-    return "登録成功";
+    String playerName = request.getLastName() + request.getFirstName();
+    response.addMessage(new Message(MessageType.SUCCESS, "S_0001", playerName));
+    return response;
   }
 }
