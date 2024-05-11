@@ -1,7 +1,5 @@
 package com.caruta.kn.model;
 
-import java.util.Date;
-
 import lombok.Data;
 
 @Data
