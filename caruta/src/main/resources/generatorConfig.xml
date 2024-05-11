@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <context id="context1">
-        <jdbcConnection driverClass="org.postgresal.Driver" connectionURL="jdbc:postgresql://dpg-cj64s7acn0vc738cueeg-a.singapore-postgres.render.com:5432/caruta" userId="emi" password="y1V67uJzo1R5qDX6kegZUuDBsvTuC916" />
+        <jdbcConnection driverClass="org.postgresal.Driver" connectionURL="jdbc:postgresql://dpg-covo5jnjbltc73dhfve0-a.oregon-postgres.render.com:5432/caruta" userId="emi" password="LgXeO4nxW1mFKkJ6RVBDkS5XzC101zHW" />
 
         <!-- entity生成 -->
         <javaModelGenerator targetPackage="com.caruta.kn.entity" targetProject="C:/user/GitHub/Caruta/caruta/src/main/java" />
@@ -10,4 +10,5 @@
         <javaModelGenerator targetPackage="com.caruta.kn.mapper" targetProject="C:/user/GitHub/Caruta/caruta/src/main/resources" />
         <!-- mapper生成 -->
         <javaModelGenerator type="XMLMAPPER" targetPackage="com.caruta.kn.mapper" targetProject="C:/user/GitHub/Caruta/caruta/src/main/java" />
+    </context>
 </generatorConfiguration>
