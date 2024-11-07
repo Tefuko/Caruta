@@ -3,18 +3,14 @@
 
 <mapper namespace="com.caruta.kn.mapper.AddPlayerMapper">
 
-  <!-- <select id="getAffiliationId" resultMap="Integer">
-    SELECT
-      association_id
-    FROM
-      association_table
+  <select id="isExistPlayer" resultType="int">
+    SELECT COUNT(player_id)
+    FROM player_table
     WHERE
-      asscosication_nameがユニークである前提
-      asscosication_nameだけでユニークにならないなら他の情報も条件から追加
-      association_name = #{affiliationName}
-      AND
-      delete_flg = false
-  </select> -->
+      last_name = #{lastName}
+      AND first_name = #{firstName}
+      AND phone_number = #{telephoneNumber}
+  </select>
 
   <insert id="addPlayer">
     INSERT INTO player_table
@@ -32,7 +28,7 @@
       membership_type,
       annual_participation_count,
       points,
-      affiliation_id,
+      association_id,
       delete_flg
     )
     VALUES
@@ -50,7 +46,7 @@
       #{membershipType},
       0,
       0,
-      ${affiliationId},
+      ${associationId},
       false
     )
   </insert>
