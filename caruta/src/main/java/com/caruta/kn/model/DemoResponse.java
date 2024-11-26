@@ -1,11 +1,12 @@
 package com.caruta.kn.model;
 
+
 import lombok.Data;
 
 @Data
-public class DemoRequest {
+public class DemoResponse {
 
+  private Integer num;
   private String arg;
-  private String arg2;
 
 }

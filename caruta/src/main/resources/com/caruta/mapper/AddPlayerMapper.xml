@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.caruta.kn.mapper.AddPlayerMapper">
+
+  <select id="isExistPlayer" resultType="int">
+    SELECT COUNT(player_id)
+    FROM player_table
+    WHERE
+      last_name = #{lastName}
+      AND first_name = #{firstName}
+      AND phone_number = #{telephoneNumber}
+  </select>
+
+  <insert id="addPlayer">
+    INSERT INTO player_table
+    (
+      last_name,
+      first_name,
+      last_name_kana,
+      first_name_kana,
+      postal_code,
+      address,
+      birth_date,
+      phone_number,
+      email,
+      rank,
+      membership_type,
+      annual_participation_count,
+      points,
+      association_id,
+      delete_flg
+    )
+    VALUES
+    (
+      #{lastName},
+      #{firstName},
+      #{lastNameKana},
+      #{firstNameKana},
+      #{postalCode},
+      #{address},
+      #{birthday, jdbcType=DATE},
+      #{telephoneNumber},
+      #{email},
+      #{rank},
+      #{membershipType},
+      0,
+      0,
+      ${associationId},
+      false
+    )
+  </insert>
+
+</mapper>
