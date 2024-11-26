@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 
@@ -53,19 +50,6 @@ public class CarutaController {
   public Response<Void> addPlayer(@Valid @RequestBody AddPlayerRequest request, BindingResult bindingResult) {
 
     Response<Void> response = new Response<>();
-
-    // バリデーションエラーがある場合は、エラーメッセージをレスポンスに追加
-    if (bindingResult.hasErrors()) {
-      StringBuilder errorMessages = new StringBuilder();
-      bindingResult.getFieldErrors().forEach(error -> {
-          String field = error.getField();
-          String errorMessage = error.getDefaultMessage();
-          errorMessages.append(field).append(": ").append(errorMessage).append(", ");
-      });
-      String message = errorMessages.length() > 0 ? errorMessages.substring(0, errorMessages.length() - 2) : "";
-      response.addMessage(new Message(MessageType.DANGER, "E_0001", message));
-      return response;
-    }
 
     try {
       // 電話番号を半角数字のみに変換
