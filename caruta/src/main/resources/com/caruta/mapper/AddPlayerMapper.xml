@@ -3,14 +3,14 @@
 
 <mapper namespace="com.caruta.kn.mapper.AddPlayerMapper">
 
-  <select id="isExistPlayer" resultType="int">
+  <!-- <select id="isExistPlayer" resultType="int">
     SELECT COUNT(player_id)
     FROM player_table
     WHERE
       last_name = #{lastName}
       AND first_name = #{firstName}
       AND phone_number = #{telephoneNumber}
-  </select>
+  </select> -->
 
   <insert id="addPlayer">
     INSERT INTO player_table

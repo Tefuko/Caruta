@@ -11,12 +11,12 @@ public interface AddPlayerMapper {
 //   Integer getAffiliationId(
 //       @Param("affiliationName") String affiliationName);
 
-  // 登録リクエストが来た選手がDB内に存在するかを確認するメソッド
-  Integer isExistPlayer(
-    @Param("lastName") String lastName,
-    @Param("firstName") String firstName,
-    @Param("telephoneNumber") String telephoneNumber
-  );
+  // // 登録リクエストが来た選手がDB内に存在するかを確認するメソッド
+  // Integer isExistPlayer(
+  //   @Param("lastName") String lastName,
+  //   @Param("firstName") String firstName,
+  //   @Param("telephoneNumber") String telephoneNumber
+  // );
 
   void addPlayer(
     @Param("lastName") String lastName,

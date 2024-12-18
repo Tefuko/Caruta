@@ -3,16 +3,24 @@
 
 <mapper namespace="com.caruta.kn.mapper.DeletePlayerMapper">
 
-  <select id="isExistPlayer" resultType="int">
+  <!-- <select id="isExistPlayer" resultType="int">
     SELECT COUNT(*)
     FROM player_table
     WHERE player_id = #{playerId}
-  </select>
+  </select> -->
 
-  <update id="deletePlayer">
+  <!-- <update id="deletePlayer">
     UPDATE player_table
     SET delete_flg = true
     WHERE player_id = #{playerId}
+  </update> -->
+  <update id="deletePlayer">
+    UPDATE player_table
+    SET delete_flg = true
+    WHERE
+      last_name = #{lastName}
+      AND first_name = #{firstName}
+      AND phone_number = #{telephoneNumber}
   </update>
 
 </mapper>

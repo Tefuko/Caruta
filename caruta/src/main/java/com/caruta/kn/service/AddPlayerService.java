@@ -13,11 +13,15 @@ import com.caruta.kn.model.AddPlayerRequest;
 import com.caruta.kn.model.Message;
 import com.caruta.kn.repository.AddPlayerRepository;
 
+import com.caruta.kn.logic.CheckPlayerExistLogic;
+
 @Service
 public class AddPlayerService {
 
   @Autowired
   AddPlayerRepository addPlayerRepository;
+  @Autowired
+  CheckPlayerExistLogic checkPlayerExistLogic;
 
   /**
    * 選手IDを元に選手存在有無を取得
@@ -27,15 +31,21 @@ public class AddPlayerService {
    * @param telephoneNumber 電話番号
    * @return 選手存在有無(True: 存在する、False: 存在しない)
    */
-  public void isExistPlayer(String lastName, String firstName, String telephoneNumber) {
+  // public void isExistPlayer(String lastName, String firstName, String telephoneNumber) {
+  public Boolean isExistPlayer(String lastName, String firstName, String telephoneNumber) {
+
+    // // 選手情報を元に選手存在有無を取得するRepositoryを呼び出す
+    // Boolean isExistPlayer = checkPlayerExistLogic.isExistPlayer(lastName, firstName, telephoneNumber);
+
+    // return isExistPlayer;
 
     // 選手情報を元に選手存在有無を取得するRepositoryを呼び出す
-    Boolean isExistPlayer = addPlayerRepository.isExistPlayer(lastName, firstName, telephoneNumber);
+    return checkPlayerExistLogic.isExistPlayer(lastName, firstName, telephoneNumber);
 
-    // 選手が既にDB内に存在する場合エラースロー
-    if (isExistPlayer) {
-      throw new ApplicationException(new Message(MessageType.WARNING, "W_0005"));
-    }
+    // // 選手が既にDB内に存在する場合エラースロー
+    // if (isExistPlayer) {
+    //   throw new ApplicationException(new Message(MessageType.WARNING, "W_0005"));
+    // }
   }
 
   /**

@@ -14,16 +14,17 @@ import com.caruta.kn.enums.MessageType;
 import com.caruta.kn.exception.ApplicationException;
 import com.caruta.kn.model.Message;
 import com.caruta.kn.model.AddPlayerRequest;
-// import com.caruta.kn.service.AddAssociationRequest;
+import com.caruta.kn.model.AddAssociationRequest;
 // import com.caruta.kn.model.AddTournamentRequest;
 import com.caruta.kn.model.DeletePlayerRequest;
 import com.caruta.kn.model.Response;
 import com.caruta.kn.service.AddPlayerService;
-// import com.caruta.kn.service.AddAssociationService;
+import com.caruta.kn.service.AddAssociationService;
 // import com.caruta.kn.service.AddTournamentService;
 import com.caruta.kn.service.DeletePlayerService;
 import com.caruta.kn.logic.NumberConverterLogic;
 import com.caruta.kn.logic.GetAssociationIdFromNameLogic;
+import com.caruta.kn.logic.GetPlayerIdFromPlayerInfoLogic;
 
 @RestController
 @RequestMapping("/caruta")
@@ -34,8 +35,8 @@ public class CarutaController {
 
   @Autowired
   AddPlayerService addPlayerService;
-  // @Autowired
-  // AddPlayerService addAssociationService;
+  @Autowired
+  AddAssociationService addAssociationService;
   // @Autowired
   // AddTournamentService addTournamentService;
   @Autowired
@@ -44,6 +45,8 @@ public class CarutaController {
   NumberConverterLogic numberConverterLogic;
   @Autowired
   GetAssociationIdFromNameLogic getAssociationIdFromNameLogic;
+  @Autowired
+  GetPlayerIdFromPlayerInfoLogic getPlayerIdFromPlayerInfoLogic;
 
   @PostMapping(value = "/addPlayer", consumes = "application/json")
   // @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -55,8 +58,15 @@ public class CarutaController {
       // 電話番号を半角数字のみに変換
       String telephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getTelephoneNumber());
 
+      // // 選手情報を元に既にその選手がDBに登録されているかを判定
+      // addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
+
       // 選手情報を元に既にその選手がDBに登録されているかを判定
-      addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
+      // Boolean isExistPlayer = addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
+      if (addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
+        response.addMessage(new Message(MessageType.WARNING, "W_0005"));
+        return response;
+      }
 
       // 所属会名を元に所属会IDを取得
       Integer associationId = getAssociationIdFromNameLogic.getAssociationId(request.getAssociationName());
@@ -89,11 +99,21 @@ public class CarutaController {
     Response<Void> response = new Response<>();
 
     try {
-      // 選手IDを元に選手の存在有無を確認
-      deletePlayerService.isExistPlayer(request.getPlayerId());
+      // 電話番号を半角数字のみに変換
+      String telephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getTelephoneNumber());
+
+      // 選手情報を元に既にその選手がDBに登録されているかを判定
+      // deletePlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
+      if (!deletePlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
+        response.addMessage(new Message(MessageType.WARNING, "W_0004"));
+        return response;
+      }
+
+      // // 選手情報を元に選手IDを取得
+      // Integer playerId = getPlayerIdFromPlayerInfoLogic.getPlayerId(request.getLastName(), request.getFirstName(), telephoneNumber);
 
       // 選手情報を削除（論理削除）
-      deletePlayerService.deletePlayer(request);
+      deletePlayerService.deletePlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
 
     } catch(ApplicationException e) {
 
@@ -109,46 +129,47 @@ public class CarutaController {
       return response;
     }
 
-    response.addMessage(new Message(MessageType.SUCCESS, "S_0003", String.valueOf(request.getPlayerId())));
+    String playerName = request.getLastName() + request.getFirstName();
+    response.addMessage(new Message(MessageType.SUCCESS, "S_0003", String.valueOf(playerName)));
     return response;
   }
 
-  // @PostMapping(value = "/addAssociation", consumes = "application/json")
-  // public Response<Void> AddAssociation(@RequestBody AddAssociationRequest request) {
+  @PostMapping(value = "/addAssociation", consumes = "application/json")
+  public Response<Void> AddAssociation(@RequestBody AddAssociationRequest request) {
 
-  //   Response<Void> response = new Response<>();
+    Response<Void> response = new Response<>();
 
-  //   try {
-  //     // 会長選手IDを取得(仮で1に設定)
-  //     String presidentPlayerId = 1;
+    try {
+      // 会長、副会長ともに電話番号を半角数字のみに変換
+      String presidentTelephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getPresidentTelephoneNumber());
+      String vicePresidentTelephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getVicePresidentTelephoneNumber());
 
-  //     // 副会長選手IDを取得(仮で1に設定)
-  //     String vicePresidentPlayerId = 1;
+      // 会長選手IDを取得
+      Integer presidentPlayerId = getPlayerIdFromPlayerInfoLogic.getPlayerId(request.getPresidentLastName(), request.getPresidentFirstName(), presidentTelephoneNumber);
 
-  //     // 所属会名を元に所属会IDを取得
-  //     Integer affiliationId = addPlayerService.getAffiliationId(request.getAffiliationName());
+      // 副会長選手IDを取得
+      Integer vicePresidentPlayerId = getPlayerIdFromPlayerInfoLogic.getPlayerId(request.getVicePresidentLastName(), request.getVicePresidentFirstName(), vicePresidentTelephoneNumber);
 
-  //     // 選手情報をDBに登録
-  //     addPlayerService.addPlayer(request, affiliationId, telephoneNumber);
+      // 会情報をDBに登録
+      addAssociationService.addAssociation(request, presidentPlayerId, vicePresidentPlayerId);
 
-  //   } catch(ApplicationException e) {
+    } catch(ApplicationException e) {
 
-  //     e.getMessages().forEach(message -> {
-  //       response.addMessage(message);
-  //     });
-  //     return response;
+      e.getMessages().forEach(message -> {
+        response.addMessage(message);
+      });
+      return response;
 
-  //   } catch(Throwable e) {
+    } catch(Throwable e) {
 
-  //     String message = e.getMessage();
-  //     response.addMessage(new Message(MessageType.DANGER, "E_0001", message));
-  //     return response;
-  //   }
+      String message = e.getMessage();
+      response.addMessage(new Message(MessageType.DANGER, "E_0001", message));
+      return response;
+    }
 
-  //   String playerName = request.getLastName() + request.getFirstName();
-  //   response.addMessage(new Message(MessageType.SUCCESS, "S_0001", playerName));
-  //   return response;
-  // }
+    response.addMessage(new Message(MessageType.SUCCESS, "S_0004", request.getAssociationName()));
+    return response;
+  }
 
   // @PostMapping(value = "/addTournament", consumes = "application/json")
   // public Response<Void> addTournament(@RequestBody AddTournamentRequest request) {

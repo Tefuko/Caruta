@@ -5,6 +5,12 @@ import lombok.Data;
 @Data
 public class DeletePlayerRequest {
 
-    // 選手id
-    private Integer playerId;
+  // 姓
+  private String lastName;
+
+  // 名
+  private String firstName;
+
+  // 電話番号
+  private String telephoneNumber;
 }
