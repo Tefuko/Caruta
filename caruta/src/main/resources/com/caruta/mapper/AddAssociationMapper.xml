@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.caruta.kn.mapper.AddAssociationMapper">
+
+  <insert id="addAssociation">
+    INSERT INTO association_table
+    (
+      association_name,
+      affiliated_branch_name,
+      located_prefecture,
+      president_player_id,
+      vice_president_player_id,
+      association_email
+    )
+    VALUES
+    (
+      #{associationName},
+      #{affiliatedBranchName},
+      #{locatedPrefecture},
+      #{presidentPlayerId},
+      #{vicePresidentPlayerId},
+      #{associationEmail}
+    )
+  </insert>
+
+</mapper>
