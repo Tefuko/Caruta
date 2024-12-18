@@ -58,11 +58,7 @@ public class CarutaController {
       // 電話番号を半角数字のみに変換
       String telephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getTelephoneNumber());
 
-      // // 選手情報を元に既にその選手がDBに登録されているかを判定
-      // addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
-
       // 選手情報を元に既にその選手がDBに登録されているかを判定
-      // Boolean isExistPlayer = addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
       if (addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
         response.addMessage(new Message(MessageType.WARNING, "W_0005"));
         return response;
@@ -103,14 +99,10 @@ public class CarutaController {
       String telephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getTelephoneNumber());
 
       // 選手情報を元に既にその選手がDBに登録されているかを判定
-      // deletePlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
       if (!deletePlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
         response.addMessage(new Message(MessageType.WARNING, "W_0004"));
         return response;
       }
-
-      // // 選手情報を元に選手IDを取得
-      // Integer playerId = getPlayerIdFromPlayerInfoLogic.getPlayerId(request.getLastName(), request.getFirstName(), telephoneNumber);
 
       // 選手情報を削除（論理削除）
       deletePlayerService.deletePlayer(request.getLastName(), request.getFirstName(), telephoneNumber);
