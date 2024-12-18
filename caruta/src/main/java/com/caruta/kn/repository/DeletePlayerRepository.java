@@ -12,28 +12,18 @@ public class DeletePlayerRepository {
   DeletePlayerMapper deletePlayerMapper;
 
   /**
-   * 選手IDを元に、その選手IDの選手がDBに存在するかどうかを取得
-   *
-   * @param playerId 選手ID
-   * @return 選手存在有無(True: 存在する、False: 存在しない)
-   */
-  public Boolean isExistPlayer(Integer playerId) {
-
-    // 選手IDに一致する選手IDを持つ行数をcountするmapperを呼び出す
-    Integer countPlayerId = deletePlayerMapper.isExistPlayer(playerId);
-    return countPlayerId == 1;
-  }
-
-  /**
    * 選手情報をDBから削除（論理削除）
    *
-   * @param playerInfo 選手情報
+   * @param lastName 姓
+   * @param firstName 名
+   * @param telephoneNumber 電話番号
    */
-  public void deletePlayer(DeletePlayerRequest playerInfo) {
+  public void deletePlayer(String lastName, String firstName, String telephoneNumber) {
 
-    // 選手情報をDBに登録
+    // 該当選手IDの選手データをDBから削除
     deletePlayerMapper.deletePlayer(
-      playerInfo.getPlayerId()
-      );
+      lastName,
+      firstName,
+      telephoneNumber);
   }
 }

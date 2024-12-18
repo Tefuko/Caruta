@@ -9,37 +9,42 @@ import com.caruta.kn.model.DeletePlayerRequest;
 import com.caruta.kn.model.Message;
 import com.caruta.kn.repository.DeletePlayerRepository;
 
+import com.caruta.kn.logic.CheckPlayerExistLogic;
+
 @Service
 public class DeletePlayerService {
 
   @Autowired
   DeletePlayerRepository deletePlayerRepository;
+  @Autowired
+  CheckPlayerExistLogic checkPlayerExistLogic;
 
   /**
    * 選手IDを元に選手存在有無を取得
    *
    * @param playerId 選手ID
    * @throws ApplicationException 所属会名が会テーブルに存在しない場合
+   * @return 選手存在有無(True: 存在する、False: 存在しない)
    */
-  public void isExistPlayer(Integer playerId) throws ApplicationException {
+  public Boolean isExistPlayer(String lastName, String firstName, String telephoneNumber) {
 
     // 選手IDを元に選手存在有無を取得するRepositoryを呼び出す
-    Boolean isExistPlayer = deletePlayerRepository.isExistPlayer(playerId);
-
-    // 所属会名が会テーブルに存在しない場合エラースロー
-    if (!isExistPlayer) {
-      throw new ApplicationException(new Message(MessageType.WARNING, "W_0004"));
-    }
+    return checkPlayerExistLogic.isExistPlayer(lastName, firstName, telephoneNumber);
   }
 
   /**
    * 選手情報をDBから削除
    *
-   * @param playerInfo    選手情報
+   * @param lastName 姓
+   * @param firstName 名
+   * @param telephoneNumber 電話番号
    */
-  public void deletePlayer(DeletePlayerRequest playerInfo) {
+  public void deletePlayer(String lastName, String firstName, String telephoneNumber) {
 
     // 選手情報をDBから削除（論理削除）
-    deletePlayerRepository.deletePlayer(playerInfo);
+    deletePlayerRepository.deletePlayer(
+      lastName,
+      firstName,
+      telephoneNumber);
   }
 }
