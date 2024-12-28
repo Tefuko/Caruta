@@ -25,6 +25,7 @@ import com.caruta.kn.service.DeletePlayerService;
 import com.caruta.kn.logic.NumberConverterLogic;
 import com.caruta.kn.logic.GetAssociationIdFromNameLogic;
 import com.caruta.kn.logic.GetPlayerIdFromPlayerInfoLogic;
+import com.caruta.kn.logic.CheckPlayerExistLogic;
 
 @RestController
 @RequestMapping("/caruta")
@@ -47,6 +48,8 @@ public class CarutaController {
   GetAssociationIdFromNameLogic getAssociationIdFromNameLogic;
   @Autowired
   GetPlayerIdFromPlayerInfoLogic getPlayerIdFromPlayerInfoLogic;
+  @Autowired
+  CheckPlayerExistLogic checkPlayerExistLogic;
 
   @PostMapping(value = "/addPlayer", consumes = "application/json")
   // @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -59,7 +62,7 @@ public class CarutaController {
       String telephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getTelephoneNumber());
 
       // 選手情報を元に既にその選手がDBに登録されているかを判定
-      if (addPlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
+      if (checkPlayerExistLogic.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
         response.addMessage(new Message(MessageType.WARNING, "W_0005"));
         return response;
       }
@@ -99,7 +102,7 @@ public class CarutaController {
       String telephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getTelephoneNumber());
 
       // 選手情報を元に既にその選手がDBに登録されているかを判定
-      if (!deletePlayerService.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
+      if (!checkPlayerExistLogic.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
         response.addMessage(new Message(MessageType.WARNING, "W_0004"));
         return response;
       }
