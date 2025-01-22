@@ -52,7 +52,6 @@ public class CarutaController {
   CheckPlayerExistLogic checkPlayerExistLogic;
 
   @PostMapping(value = "/addPlayer", consumes = "application/json")
-  // @ExceptionHandler(MethodArgumentNotValidException.class)
   public Response<Void> addPlayer(@Valid @RequestBody AddPlayerRequest request, BindingResult bindingResult) {
 
     Response<Void> response = new Response<>();
@@ -93,7 +92,7 @@ public class CarutaController {
   }
 
   @PostMapping(value = "/deletePlayer", consumes = "application/json")
-  public Response<Void> deletePlayer(@RequestBody DeletePlayerRequest request) {
+  public Response<Void> deletePlayer(@Valid @RequestBody DeletePlayerRequest request, BindingResult bindingResult) {
 
     Response<Void> response = new Response<>();
 
@@ -130,7 +129,7 @@ public class CarutaController {
   }
 
   @PostMapping(value = "/addAssociation", consumes = "application/json")
-  public Response<Void> AddAssociation(@RequestBody AddAssociationRequest request) {
+  public Response<Void> AddAssociation(@Valid @RequestBody AddAssociationRequest request, BindingResult bindingResult) {
 
     Response<Void> response = new Response<>();
 
