@@ -102,7 +102,8 @@ public class CarutaController {
 
       // 選手情報を元に既にその選手がDBに登録されているかを判定
       if (!checkPlayerExistLogic.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
-        response.addMessage(new Message(MessageType.WARNING, "W_0004"));
+        String playerName = request.getLastName() + request.getFirstName();
+        response.addMessage(new Message(MessageType.WARNING, "W_0004", playerName));
         return response;
       }
 

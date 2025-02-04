@@ -27,9 +27,10 @@ public class GetPlayerIdFromPlayerInfoLogic {
    */
   public Integer getPlayerId(String lastName, String firstName, String telephoneNumber) {
 
-    // 選手情報を元に選手存在有無を取得し、存在しない場合にエラーメッセージを投げる
+    // 選手情報を元に既にその選手がDBに登録されているかを判定し、登録されていない場合にエラーメッセージを投げる
     if(!checkPlayerExistLogic.isExistPlayer(lastName, firstName, telephoneNumber)) {
-      throw new ApplicationException(new Message(MessageType.WARNING, "W_0004"));
+      String PlayerName = lastName + firstName;
+      throw new ApplicationException(new Message(MessageType.WARNING, "W_0004", PlayerName));
     }
 
     // 選手情報を元に選手IDを取得するRepositoryを呼び出す
