@@ -102,7 +102,8 @@ public class CarutaController {
 
       // 選手情報を元に既にその選手がDBに登録されているかを判定
       if (!checkPlayerExistLogic.isExistPlayer(request.getLastName(), request.getFirstName(), telephoneNumber)) {
-        response.addMessage(new Message(MessageType.WARNING, "W_0004"));
+        String playerName = request.getLastName() + request.getFirstName();
+        response.addMessage(new Message(MessageType.WARNING, "W_0004", playerName));
         return response;
       }
 
@@ -137,6 +138,20 @@ public class CarutaController {
       // 会長、副会長ともに電話番号を半角数字のみに変換
       String presidentTelephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getPresidentTelephoneNumber());
       String vicePresidentTelephoneNumber = numberConverterLogic.convertToHalfWidthNumber(request.getVicePresidentTelephoneNumber());
+
+      // // 選手情報を元に既にその選手がDBに登録されているかを判定(会長)
+      // if (!checkPlayerExistLogic.isExistPlayer(request.getPresidentLastName(), request.getPresidentFirstName(), presidentTelephoneNumber)) {
+      //   String PresidentName = request.getPresidentLastName() + request.getPresidentFirstName();
+      //   response.addMessage(new Message(MessageType.WARNING, "W_0004", PresidentName));
+      //   return response;
+      // }
+
+      // // 選手情報を元に既にその選手がDBに登録されているかを判定(副会長)
+      // if (!checkPlayerExistLogic.isExistPlayer(request.getVicePresidentLastName(), request.getVicePresidentFirstName(), presidentTelephoneNumber)) {
+      //   String VicePresidentName = request.getVicePresidentLastName() + request.getVicePresidentFirstName();
+      //   response.addMessage(new Message(MessageType.WARNING, "W_0004", VicePresidentName));
+      //   return response;
+      // }
 
       // 会長選手IDを取得
       Integer presidentPlayerId = getPlayerIdFromPlayerInfoLogic.getPlayerId(request.getPresidentLastName(), request.getPresidentFirstName(), presidentTelephoneNumber);
