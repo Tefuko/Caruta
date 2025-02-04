@@ -58,7 +58,7 @@ public class AddPlayerRequest {
 
   // 会員種別
   @NotEmpty(message = "「会員種別」は必須項目です")
-  @Size(min = 4, max = 4, message = "「会員種別」は4文字でなければなりません")
+  @Size(min = 0, max = 4, message = "「会員種別」は4文字以下でなければなりません")
   private String membershipType;
 
   // 所属会名
